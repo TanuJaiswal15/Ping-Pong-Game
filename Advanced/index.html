@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ping Pong Game - Advanced</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="hud">
+        <label for="themeSelector" class="visually-hidden">Select Theme</label>
+        <div class="scoreboard" id="scoreboard">
+            <span id="playerScore">0</span> : <span id="aiScore">0</span>
+        </div>
+        <select id="themeSelector" title="Select Theme">
+            <option value="neon">Minimal Neon</option>
+            <option value="retro">Arcade Retro</option>
+            <option value="glass">Glassmorphism</option>
+            <option value="arena">Sports Arena</option>
+        </select>
+    </div>
+    <div class="game-container">
+        <canvas id="pongCanvas" width="800" height="500"></canvas>
+        <audio id="blipSound" src="blip.mp3" preload="auto"></audio>
+        <audio id="boopSound" src="boop.mp3" preload="auto"></audio>
+    </div>
+    <div id="audience"></div>
+    <script src="game.js"></script>
+</body>
+</html>
