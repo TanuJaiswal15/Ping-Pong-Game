@@ -55,13 +55,33 @@ function drawNeonTrail() {
     }
 }
 
-function drawGlassPaddle(x, y) {
-    ctx.save();
-    ctx.globalAlpha = 0.7;
-    ctx.filter = 'blur(2px)';
-    ctx.fillStyle = 'rgba(255,255,255,0.3)';
-    ctx.fillRect(x, y, paddleWidth, paddleHeight);
-    ctx.restore();
+function drawArenaTrail() {
+    for (let i = 0; i < ballTrail.length; i++) {
+        const t = ballTrail[i];
+        ctx.save();
+        ctx.globalAlpha = 0.2 + 0.5 * (i / ballTrail.length);
+        ctx.shadowColor = '#f901aa';
+        ctx.shadowBlur = 12;
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, ballSize/2, 0, Math.PI*2);
+        ctx.fillStyle = '#f901aa';
+        ctx.fill();
+        ctx.restore();
+    }
+}
+function drawRetroTrail() {
+    for (let i = 0; i < ballTrail.length; i++) {
+        const t = ballTrail[i];
+        ctx.save();
+        ctx.globalAlpha = 0.2 + 0.5 * (i / ballTrail.length);
+        ctx.shadowColor = '#fff200';
+        ctx.shadowBlur = 12;
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, ballSize/2, 0, Math.PI*2);
+        ctx.fillStyle = '#fff200';
+        ctx.fill();
+        ctx.restore();
+    }
 }
 
 function drawRetroPaddle(x, y) {
@@ -82,7 +102,18 @@ function drawNeonPaddle(x, y) {
 
 function drawArenaPaddle(x, y) {
     ctx.save();
-    ctx.fillStyle = '#fff';
+    ctx.shadowColor = '#f901aa';
+    ctx.shadowBlur = 16;
+    ctx.fillStyle = '#f901aa';
+    ctx.fillRect(x, y, paddleWidth, paddleHeight);
+    ctx.restore();
+}
+
+function drawGlassPaddle(x, y) {
+    ctx.save();
+    ctx.shadowColor = '#fff';
+    ctx.shadowBlur = 2;
+    ctx.fillStyle = grad;
     ctx.fillRect(x, y, paddleWidth, paddleHeight);
     ctx.restore();
 }
@@ -104,24 +135,45 @@ function drawBall() {
         ctx.arc(ballX + ballSize/2, ballY + ballSize/2, ballSize/2, 0, Math.PI*2);
         ctx.fill();
         ctx.restore();
+        drawRetroTrail();
     } else if (theme === 'glass') {
+        ctx.globalAlpha = 1;
+        ctx.shadowColor = '#fff';
+        ctx.shadowBlur = 2;
         let grad = ctx.createRadialGradient(ballX+ballSize/2, ballY+ballSize/2, 2, ballX+ballSize/2, ballY+ballSize/2, ballSize/2);
         grad.addColorStop(0, '#fff');
         grad.addColorStop(1, '#00c6ff');
-        ctx.shadowColor = '#fff';
-        ctx.shadowBlur = 12;
         ctx.fillStyle = grad;
         ctx.beginPath();
         ctx.arc(ballX + ballSize/2, ballY + ballSize/2, ballSize/2, 0, Math.PI*2);
         ctx.fill();
         ctx.restore();
+        drawGlassTrail();
     } else if (theme === 'arena') {
         ctx.save();
         ctx.translate(ballX + ballSize/2, ballY + ballSize/2);
         ctx.rotate(ballSpin);
-        ctx.fillStyle = '#fff';
+        ctx.shadowColor = '#f901aa';
+        ctx.shadowBlur = 24;
+        ctx.fillStyle = '#f901aa';
         ctx.beginPath();
         ctx.arc(0, 0, ballSize/2, 0, Math.PI*2);
+        ctx.fill();
+        ctx.restore();
+        drawArenaTrail();
+    }
+}
+
+function drawGlassTrail() {
+    for (let i = 0; i < ballTrail.length; i++) {
+        const t = ballTrail[i];
+        ctx.save();
+        ctx.globalAlpha = 0.15 + 0.3 * (i / ballTrail.length);
+        ctx.shadowColor = '#00c6ff';
+        ctx.shadowBlur = 10;
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, ballSize/2, 0, Math.PI*2);
+        ctx.fillStyle = '#00c6ff';
         ctx.fill();
         ctx.restore();
     }
@@ -145,9 +197,9 @@ function drawPaddles() {
 
 function drawBackground() {
     if (theme === 'arena') {
-        ctx.fillStyle = '#388e3c';
+        ctx.fillStyle = '#000000ff';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = '#fff';
+        ctx.strokeStyle = '#ff00c8ff';
         ctx.lineWidth = 4;
         ctx.strokeRect(0, 0, canvas.width, canvas.height);
         ctx.setLineDash([16, 16]);
@@ -183,7 +235,20 @@ function update() {
     }
     if (theme === 'arena') {
         ballSpin += ballVX * 0.02;
+        ballTrail.push({x: ballX+ballSize/2, y: ballY+ballSize/2});
+        if (ballTrail.length > 12) ballTrail.shift();
     }
+
+    if (theme === 'retro') {
+        ballTrail.push({x: ballX+ballSize/2, y: ballY+ballSize/2});
+        if (ballTrail.length > 12) ballTrail.shift();
+    }
+
+     if (theme === 'glass') {
+        ballTrail.push({x: ballX+ballSize/2, y: ballY+ballSize/2});
+        if (ballTrail.length > 12) ballTrail.shift();
+    }
+
     // Paddle collision
     if (ballX < 32 + paddleWidth && ballY + ballSize > playerY && ballY < playerY + paddleHeight) {
         ballVX = Math.abs(ballVX);
@@ -244,6 +309,24 @@ themeSelector.addEventListener('change', function() {
     document.body.className = theme;
     resetBall();
 });
+
+// Dynamic background elements
+const bgGradient = document.getElementById('dynamic-bg-gradient');
+const bgParticles = document.getElementById('dynamic-bg-particles');
+const bgWaves = document.getElementById('dynamic-bg-waves');
+const bgBlobs = document.getElementById('dynamic-bg-blobs');
+const bgConfetti = document.getElementById('dynamic-bg-confetti');
+const crtOverlay = document.getElementById('crt-overlay');
+
+// Unlock audio after first user interaction
+function unlockAudio() {
+    blipSound.play().catch(()=>{});
+    boopSound.play().catch(()=>{});
+    window.removeEventListener('mousedown', unlockAudio);
+    window.removeEventListener('keydown', unlockAudio);
+}
+window.addEventListener('mousedown', unlockAudio);
+window.addEventListener('keydown', unlockAudio);
 
 document.body.className = theme;
 gameLoop();
