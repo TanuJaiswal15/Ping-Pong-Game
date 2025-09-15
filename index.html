@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ping Pong Game</title>
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      overflow: hidden;
+    }
+
+    /* Dynamic Gradient Background */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(-45deg, #1e3c72, #2a5298, #6b0cb4, #fc0585);
+      background-size: 400% 400%;
+      animation: 1s linear 1s infinite alternate slide-in;
+      z-index: -2;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating particles */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .particles span {
+      position: absolute;
+      display:block;
+      width: 30px;
+      height: 30px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 80%;
+      animation: move 10s linear infinite;
+      bottom: -100px;
+    }
+
+    @keyframes move {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
+    }
+
+    /* Title & Links */
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-shadow: 0px 4px 8px rgba(0,0,0,0.4);
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    li {
+      margin: 15px 0;
+    }
+
+    a {
+      text-decoration: none;
+      color: white;
+      font-size: 1.5rem;
+      padding: 12px 24px;
+      border: 2px solid white;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.1);
+      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px);
+    }
+
+    a:hover {
+      background: white;
+      color: #1e3c72;
+      box-shadow: 0px 8px 20px rgba(0,0,0,0.3);
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="particles">
+    <!-- Generate multiple floating circles -->
+    <span style="left: 5%; animation-duration: 20s; width: 10px; height: 10px;"></span>
+    <span style="left: 10%; animation-duration: 22s; width: 14px; height: 14px;"></span>
+    <span style="left: 15%; animation-duration: 18s; width: 12px; height: 12px;"></span>
+    <span style="left: 20%; animation-duration: 24s; width: 16px; height: 16px;"></span>
+    <span style="left: 25%; animation-duration: 25s; width: 17px; height: 17px;"></span>
+    <span style="left: 30%; animation-duration: 19s; width: 13px; height: 13px;"></span>
+    <span style="left: 35%; animation-duration: 21s; width: 15px; height: 15px;"></span>
+    <span style="left: 40%; animation-duration: 16s; width: 12px; height: 12px;"></span>
+    <span style="left: 45%; animation-duration: 23s; width: 18px; height: 18px;"></span>
+    <span style="left: 50%; animation-duration: 20s; width: 14px; height: 14px;"></span>
+    <span style="left: 55%; animation-duration: 12s; width: 16px; height: 16px;"></span>
+    <span style="left: 60%; animation-duration: 17s; width: 11px; height: 11px;"></span>
+    <span style="left: 65%; animation-duration: 22s; width: 15px; height: 15px;"></span>
+    <span style="left: 70%; animation-duration: 15s; width: 19px; height: 19px;"></span>
+    <span style="left: 75%; animation-duration: 18s; width: 13px; height: 13px;"></span>
+    <span style="left: 80%; animation-duration: 21s; width: 17px; height: 17px;"></span>
+    <span style="left: 85%; animation-duration: 25s; width: 15px; height: 15px;"></span>
+    <span style="left: 90%; animation-duration: 19s; width: 12px; height: 12px;"></span>
+    <span style="left: 95%; animation-duration: 23s; width: 16px; height: 16px;"></span>
+    <span style="left: 98%; animation-duration: 20s; width: 10px; height: 10px;"></span>
+    <span style="left: 25%; animation-duration: 25s; width: 17px; height: 17px;"></span>
+    <span style="left: 85%; animation-duration: 18s; width: 15px; height: 15px;"></span>
+    <span style="left: 40%; animation-duration: 16s; width: 12px; height: 12px;"></span>
+    <span style="left: 55%; animation-duration: 12s; width: 16px; height: 16px;"></span>
+    <span style="left: 70%; animation-duration: 15s; width: 19px; height: 19px;"></span>
+    <span style="left: 85%; animation-duration: 25s; width: 15px; height: 15px;"></span>
+  </div>
+
+  <h1>Ping Pong Game</h1>
+  <ul>
+    <li><a href="./Advanced/index.html">Play Advanced Version</a></li>
+    <li><a href="./basic/index.html">Play Basic Version</a></li>
+  </ul>
+</body>
+</html>
